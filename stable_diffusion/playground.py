@@ -22,21 +22,20 @@ model_file = '../data/v1-5-pruned-emaonly.ckpt'
 models = model_loader.preload_weights_from_standard_weights(model_file, DEVICE)
 
 
-# TEXT to IMAGE
-prompt = "Generate a realistic 8K resolution of given image of a young man happily posing, and beside him, add a beautiful and smiling young woman as his girlfriend. Ensure the scene is natural, with appropriate lighting, shadows, and facial expressions reflecting a genuine and happy moment between the couple"
+prompt = "friends playing football in Istanbul Airport. Ultra Realistic"
 uncond_prompt = ''
 do_cfg = True
-cfg_scale = 7
+cfg_scale = 10
 
 
 # IMAGE to IMAGE
 input_image = None
-image_path = '../images/amin.jpg'
-input_image = Image.open(image_path)
-strength = 0.7
+image_path = '../images/dog.jpg'
+# input_image = Image.open(image_path)
+strength = 0.8
 
-sampler = 'ddpm'
-num_inference_steps = 50
+sampler = 'ddim'
+num_inference_steps = 60
 seed = 42
 
 output_image = pipeline.generate(
@@ -55,4 +54,6 @@ output_image = pipeline.generate(
     tokenizer=tokenizer,
 )
 
-Image.fromarray(output_image)
+img = Image.fromarray(output_image)
+img.save('../images/football.jpg')
+

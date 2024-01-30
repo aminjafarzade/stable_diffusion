@@ -1,6 +1,6 @@
 import torch
 import numpy as np
-
+from PIL import Image
 
 class DDPMSampler:
 
@@ -80,6 +80,7 @@ class DDPMSampler:
             noise = torch.randn(model_output.shape, generator=self.generator,
                                 device=device, dtype=model_output.dtype)
             variance = (self._get_variance(t) ** 0.5) * noise
+
 
         return pred_prev_sample + variance
 

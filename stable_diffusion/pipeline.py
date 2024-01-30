@@ -2,6 +2,7 @@ import torch
 import numpy as np
 from tqdm import tqdm
 from ddpm import DDPMSampler
+from ddim import DDIMSampler
 
 
 WIDTH = 512
@@ -73,8 +74,10 @@ def generate(
         if sampler_name == 'ddpm':
             sampler = DDPMSampler(generator)
             sampler.set_inference_timesteps(n_inference_steps)
-        else:
-            raise ValueError(f"Sampler named {sampler_name} does not exist")
+        elif sampler_name == 'ddim':
+            sampler = DDIMSampler(generator)
+            sampler.set_inference_timesteps(n_inference_steps)
+        
 
         latents_shape = (1, 4, LATENTS_HEIGHT, LATENTS_WIDTH)
 
@@ -126,7 +129,7 @@ def generate(
                 model_output = cfg_scale * \
                     (cond_output - uncond_output) + uncond_output
 
-            latents = sampler.step(timestep, latents, model_output)
+            latents = sampler.step(timestep=timestep, latents=latents, model_output=model_output)
 
         to_idle(diffusion)
 
